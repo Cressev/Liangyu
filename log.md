@@ -35,3 +35,15 @@
 - Stopped original Faster R-CNN PIDs `740252` and `740320` before their first scheduled epoch-10 eval because they had the same shared-temp-dir risk. Restarted Faster R-CNN RGB PID `749615` on GPU4 with log `/dpc/yuanxiangqing/projects/detection/training_logs/frcnn-rgb-bs2-restart_20260426_140606.log` and Sonar PID `749751` on GPU5 with log `/dpc/yuanxiangqing/projects/detection/training_logs/frcnn-sonar-bs2-restart_20260426_140607.log`.
 - Confirmed the resumed SSD Sonar run passed the previously failing epoch-10 COCO eval: log shows `Get map done`, `Epoch:10/350`, best weight save, and continuation to epoch 11. Active formal jobs after the fix: RT-DETR RGB/Sonar PIDs `721425`/`725173`, SSD RGB/Sonar PIDs `728127`/`749613`, Faster R-CNN RGB/Sonar PIDs `749615`/`749751`.
 - Added `/dpc/yuanxiangqing/projects/detection/training_logs/TRAINING_LAUNCH_README.md`, documenting the exact smoke, formal, resume, and monitoring commands for YOLO, RT-DETR, SSD, and Faster R-CNN. Updated the training log index to point to it.
+
+## 2026-04-26 15:26 GitHub upload snapshot
+- Pushed the source/docs/log index snapshot to GitHub repo  on branch , commit .
+- Started background GitHub Release asset upload for the current remote project snapshot, including weights, logs, run outputs, extracted data, and project memory.
+- Release upload PID: ; log: .
+- Excluded duplicate source archives from the release tar split:  and .
+
+## 2026-04-26 15:32 GitHub upload memory correction
+- Correction for the previous GitHub upload note: source/docs/log indexes were pushed to GitHub repo Cressev/Liangyu on branch main, commit 9e802f5.
+- Large project snapshot upload is running as GitHub Release asset upload PID 864878.
+- Upload log: /dpc/yuanxiangqing/projects/detection/training_logs/github_release_upload_20260426_152626.log.
+- The release snapshot excludes duplicate archives /dpc/yuanxiangqing/projects/detection/MutilModel_423.tar.gz and MutilModel_423/数据集.zip, while keeping extracted project files, weights, logs, run outputs, datasets, and memory files.
