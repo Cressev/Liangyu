@@ -1,0 +1,61 @@
+# YOLO11s + point-cloud inspired depth prior + SMCA-style RGB fusion
+#
+# Candidate priors:
+# 1) geometric break prior:
+#    foreground points should deviate from local seabed / large planar background
+# 2) compact connected prior:
+#    target points should form compact, finite connected voxel clusters
+
+nc: 16
+scales:
+  n: [0.50, 0.25, 1024]
+  s: [0.50, 0.50, 1024]
+  m: [0.50, 1.00, 512]
+  l: [1.00, 1.00, 512]
+  x: [1.00, 1.50, 512]
+
+backbone:
+  - [-1, 1, Conv, [64, 3, 2], 'RGB'] # 0-P1/2
+  - [-1, 1, Conv, [128, 3, 2]] # 1-P2/4
+  - [-1, 2, C3k2, [256, False, 0.25]] # 2
+  - [-1, 1, Conv, [256, 3, 2]] # 3-P3/8
+  - [-1, 2, C3k2, [512, False, 0.25]] # 4 RGB_P3
+  - [-1, 1, Conv, [512, 3, 2]] # 5-P4/16
+  - [-1, 2, C3k2, [512, True]] # 6 RGB_P4
+  - [-1, 1, Conv, [1024, 3, 2]] # 7-P5/32
+  - [-1, 2, C3k2, [1024, True]] # 8
+  - [-1, 1, SPPF, [1024, 5]] # 9
+  - [-1, 2, C2PSA, [1024]] # 10 RGB_P5
+
+  # point-cloud inspired prior branch from X input (depth + intrinsics)
+  - [-1, 1, PointSMCAPriorBranch, [64, [318.948951, 318.948951, 320.0, 240.0], 640, 1, 80, [0.10, 0.10, 0.25], [[-10.0, 10.0], [-6.0, 6.0], [0.3, 20.0]]], 'X'] # 11
+
+  # SMCA-style prior injection at P3/P4/P5
+  - [[4, 11], 1, PointSMCAPriorFusion, [256, 1, 'gated']] # 12
+  - [-1, 2, C3k2, [512, False, 0.25]] # 13 P3_fused
+
+  - [[6, 11], 1, PointSMCAPriorFusion, [384, 2, 'gated']] # 14
+  - [-1, 2, C3k2, [512, True]] # 15 P4_fused
+
+  - [[10, 11], 1, PointSMCAPriorFusion, [768, 3, 'gated']] # 16
+  - [-1, 2, C3k2, [1024, True]] # 17
+  - [-1, 1, C2PSA, [1024]] # 18 P5_fused
+
+head:
+  - [18, 1, nn.Upsample, [None, 2, 'nearest']] # 19
+  - [[-1, 15], 1, Concat, [1]] # 20
+  - [-1, 2, C3k2, [512, False]] # 21
+
+  - [-1, 1, nn.Upsample, [None, 2, 'nearest']] # 22
+  - [[-1, 13], 1, Concat, [1]] # 23
+  - [-1, 2, C3k2, [256, False]] # 24 (P3)
+
+  - [-1, 1, Conv, [256, 3, 2]] # 25
+  - [[-1, 21], 1, Concat, [1]] # 26
+  - [-1, 2, C3k2, [512, False]] # 27 (P4)
+
+  - [-1, 1, Conv, [512, 3, 2]] # 28
+  - [[-1, 18], 1, Concat, [1]] # 29
+  - [-1, 2, C3k2, [1024, True]] # 30 (P5)
+
+  - [[24, 27, 30], 1, Detect, [nc]] # 31

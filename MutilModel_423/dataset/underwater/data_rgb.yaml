@@ -1,0 +1,26 @@
+# Underwater single-modality dataset config (RGB, 3-channel)
+path: /dpc/yuanxiangqing/projects/detection/MutilModel_423/dataset/underwater
+
+# Single-modality RGB image paths (relative to `path`)
+train: ./rgb/train/images
+val: ./rgb/val/images
+
+# Class configuration
+nc: 16
+names:
+  0: sea cucumber
+  1: sea urchin
+  2: scallop
+  3: starfish
+  4: conch
+  5: sea turtle
+  6: fish
+  7: crab
+  8: seahorse
+  9: jellyfish
+  10: moray eel
+  11: octopus
+  12: cuttlefish
+  13: shipwreck
+  14: airplane
+  15: sea_anemone

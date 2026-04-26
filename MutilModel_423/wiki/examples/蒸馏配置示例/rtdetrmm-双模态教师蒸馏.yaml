@@ -1,0 +1,56 @@
+# RTDETRMM 单个双模态教师蒸馏配置示例
+# 场景: 一个双模态大教师 -> 一个双模态小学生
+# 使用: model.train(data='...', distill=('此文件路径', 'both'))
+#
+# 说明:
+#   - YAML 只声明教师参与蒸馏，具体蒸馏算法由家族适配器决定
+#   - RTDETRMM 学生 output 蒸馏自动使用: matching-aware / query-aware 蒸馏
+#   - RTDETRMM 学生 feature 蒸馏自动使用: 前景引导 + 4 分项损失 (L_fg + L_bg + L_cwd + L_ctx)
+#   - 仅蒸馏最终 decoder 层的有效 query，不做全 query 蒸馏
+#   - 不需要在 YAML 中指定 query 选择策略或 loss 类型
+#
+# role 语义说明:
+#   role 表示**运行时给该教师喂什么输入**，不代表教师的历史训练来源。
+#   - role: dual -> 运行时喂完整的 RGB+X 6 通道拼接输入
+#   系统不会根据教师内部结构或历史训练方式反向推断身份。
+
+version: 1
+
+teachers:
+  - name: teacher_dual
+    role: dual               # 运行时喂 RGB+X 完整 6 通道输入
+    weights: runs/detect/rtdetrmm-r50-mm/weights/best.pt
+    yaml: rtdetr-r50-mm-mid.yaml  # 可选辅助校验
+
+mappings:
+  # ========================================
+  # 特征蒸馏 -- 支持三种配置语法
+  # ========================================
+  feature:
+    # --- 语法 1: 原子映射（单层对单层） ---
+    - teacher: teacher_dual
+      teacher_layer: 10       # 教师模型第 10 层
+      student_layer: 10       # 学生模型第 10 层
+
+    # --- 语法 2: 显式区间映射（多层对多层） ---
+    # 两侧用 [start, end] 闭区间声明，长度必须一致
+    # 系统自动 zip 展开为逐层原子映射:
+    #   T[5]->S[5], T[6]->S[6], ..., T[15]->S[15]
+    - teacher: teacher_dual
+      teacher_layer: [5, 15]   # 教师层 5-15（共 11 层）
+      student_layer: [5, 15]   # 学生层 5-15（共 11 层，与教师一致）
+
+    # --- 语法 3: 自动展开映射 ---
+    # 注意: dual 教师通常不使用 student_input 自动展开
+    # 此形式更适合单模态教师场景，如:
+    #
+    # - teacher: teacher_rgb
+    #   teacher_layer: [0, 10]
+    #   student_input: RGB     # 自动展开到学生 RGB 输入侧连续 backbone
+
+  # ========================================
+  # 输出级蒸馏 -- 教师参与声明（不写层索引）
+  # ========================================
+  # 实际蒸馏算法: query-aware + cls/box 解耦 (由 RTDETRMM 家族适配器决定)
+  output:
+    - teacher: teacher_dual

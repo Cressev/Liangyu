@@ -1,0 +1,8 @@
+version: 1
+teachers:
+- name: teacher_dual
+  role: dual
+  weights: /home/zhizi/work/multimodel/ultralyticmm/ultralyticsmm/ResTest/DistillExp/teacher-yolomm-s/weights/best.pt
+mappings:
+  output:
+  - teacher: teacher_dual

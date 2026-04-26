@@ -1,0 +1,3 @@
+Params: 9.42M (9,418,992) | GFLOPs(total[default]): 18.27
+Stages: rgb=0.00 x=0.00 fusion=18.27 head=0.00
+{"mapS": 0.1741353750827344, "mapM": 0.3884604935109075, "mapL": 0.45832776551300003, "AP": 0.3310527964521906, "AP50": 0.6292376160792347, "AP75": 0.30806536959708547, "source": "ultralytics.utils.coco_eval_bbox_mm.COCOevalBBoxMM from uploaded ultralytics.zip"}

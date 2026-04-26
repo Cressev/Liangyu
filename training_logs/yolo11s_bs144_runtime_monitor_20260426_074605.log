@@ -1,0 +1,20 @@
+# Runtime monitor started at 
+ group=rgb pid=505211 alive=yes gpu=0 epoch=46 elapsed_sec=702.9 avg_sec_per_epoch=15.28 eta_hours=1.29 gpu_mem_mib=69081 gpu_util_pct=99
+ group=sonar pid=505212 alive=yes gpu=1 epoch=46 elapsed_sec=702.4 avg_sec_per_epoch=15.27 eta_hours=1.29 gpu_mem_mib=69083 gpu_util_pct=93
+# Runtime monitor started at 2026-04-26 07:58:45
+2026-04-26 07:58:45 group=rgb pid=505211 alive=yes gpu=0 epoch=48 elapsed_sec=733.1 avg_sec_per_epoch=15.27 eta_hours=1.28 gpu_mem_mib=69225 gpu_util_pct=91
+2026-04-26 07:58:45 group=sonar pid=505212 alive=yes gpu=1 epoch=48 elapsed_sec=732.5 avg_sec_per_epoch=15.26 eta_hours=1.28 gpu_mem_mib=69227 gpu_util_pct=95
+2026-04-26 08:03:45 group=rgb pid=505211 alive=yes gpu=0 epoch=68 elapsed_sec=1035.1 avg_sec_per_epoch=15.22 eta_hours=1.19 gpu_mem_mib=69191 gpu_util_pct=90
+2026-04-26 08:03:45 group=sonar pid=505212 alive=yes gpu=1 epoch=68 elapsed_sec=1033.0 avg_sec_per_epoch=15.19 eta_hours=1.19 gpu_mem_mib=69193 gpu_util_pct=90
+2026-04-26 08:08:45 group=rgb pid=505211 alive=yes gpu=0 epoch=88 elapsed_sec=1335.9 avg_sec_per_epoch=15.18 eta_hours=1.10 gpu_mem_mib=69081 gpu_util_pct=95
+2026-04-26 08:08:45 group=sonar pid=505212 alive=yes gpu=1 epoch=88 elapsed_sec=1334.8 avg_sec_per_epoch=15.17 eta_hours=1.10 gpu_mem_mib=69083 gpu_util_pct=88
+2026-04-26 08:13:45 group=rgb pid=505211 alive=yes gpu=0 epoch=108 elapsed_sec=1637.3 avg_sec_per_epoch=15.16 eta_hours=1.02 gpu_mem_mib=69119 gpu_util_pct=90
+2026-04-26 08:13:46 group=sonar pid=505212 alive=yes gpu=1 epoch=108 elapsed_sec=1635.8 avg_sec_per_epoch=15.15 eta_hours=1.02 gpu_mem_mib=69121 gpu_util_pct=99
+2026-04-26 08:18:46 group=rgb pid=505211 alive=yes gpu=0 epoch=128 elapsed_sec=1937.4 avg_sec_per_epoch=15.14 eta_hours=0.93 gpu_mem_mib=68751 gpu_util_pct=99
+2026-04-26 08:18:46 group=sonar pid=505212 alive=yes gpu=1 epoch=128 elapsed_sec=1937.0 avg_sec_per_epoch=15.13 eta_hours=0.93 gpu_mem_mib=68753 gpu_util_pct=99
+2026-04-26 08:23:46 group=rgb pid=505211 alive=yes gpu=0 epoch=148 elapsed_sec=2238.0 avg_sec_per_epoch=15.12 eta_hours=0.85 gpu_mem_mib=68527 gpu_util_pct=90
+2026-04-26 08:23:46 group=sonar pid=505212 alive=yes gpu=1 epoch=148 elapsed_sec=2239.5 avg_sec_per_epoch=15.13 eta_hours=0.85 gpu_mem_mib=68529 gpu_util_pct=99
+2026-04-26 08:28:46 group=rgb pid=505211 alive=no gpu=0 epoch=150 elapsed_sec=2269.4 avg_sec_per_epoch=15.13 eta_hours=0.84 gpu_mem_mib=0 gpu_util_pct=0
+2026-04-26 08:28:47 group=sonar pid=505212 alive=yes gpu=1 epoch=168 elapsed_sec=2541.2 avg_sec_per_epoch=15.13 eta_hours=0.76 gpu_mem_mib=69227 gpu_util_pct=89
+2026-04-26 08:33:47 group=rgb pid=505211 alive=no gpu=0 epoch=150 elapsed_sec=2269.4 avg_sec_per_epoch=15.13 eta_hours=0.84 gpu_mem_mib=0 gpu_util_pct=0
+2026-04-26 08:33:47 group=sonar pid=505212 alive=yes gpu=1 epoch=188 elapsed_sec=2840.9 avg_sec_per_epoch=15.11 eta_hours=0.68 gpu_mem_mib=69305 gpu_util_pct=99

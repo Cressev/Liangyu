@@ -1,0 +1,7 @@
+WARNING ⚠️ Error decoding JSON from /root/.config/Ultralytics/settings.json. Starting with an empty dictionary.
+Creating new Ultralytics Settings v0.0.6 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/root/.config/Ultralytics/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart/#ultralytics-settings.
+Params: 7.22M (7,224,192) | GFLOPs(total[default]): 21.44
+Stages: rgb=0.00 x=0.00 fusion=21.44 head=0.00
+{"mapS": 0.20033356668340097, "mapM": 0.38485786779514947, "mapL": 0.49164870014910544, "AP": 0.3390478974307823, "AP50": 0.646267423900486, "AP75": 0.3155277630296788, "source": "ultralytics.utils.coco_eval_bbox_mm.COCOevalBBoxMM from uploaded ultralytics.zip"}

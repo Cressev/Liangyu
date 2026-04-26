@@ -1,0 +1,20 @@
+2026-04-26 09:14:29 remaining launcher started
+2026-04-26 09:44:30 smoke start yolov11s-rgb-bs64 gpu=1
+2026-04-26 09:45:14 train launch yolov11s-rgb-bs64 gpu=1
+2026-04-26 09:45:14 launched yolov11s-rgb-bs64 pid=582273 gpu=1
+2026-04-26 09:50:14 smoke start yolov11s-sonar-bs64 gpu=0
+2026-04-26 09:50:58 train launch yolov11s-sonar-bs64 gpu=0
+2026-04-26 09:50:58 launched yolov11s-sonar-bs64 pid=586276 gpu=0
+2026-04-26 09:50:58 smoke start yolov12s-rgb-bs64 gpu=3
+2026-04-26 09:51:48 train launch yolov12s-rgb-bs64 gpu=3
+2026-04-26 09:51:48 launched yolov12s-rgb-bs64 pid=587763 gpu=3
+2026-04-26 09:51:48 smoke start yolov12s-sonar-bs64 gpu=2
+2026-04-26 09:52:38 train launch yolov12s-sonar-bs64 gpu=2
+2026-04-26 09:52:38 launched yolov12s-sonar-bs64 pid=589316 gpu=2
+2026-04-26 10:27:39 smoke start yolov26s-rgb-bs64 gpu=5
+2026-04-26 10:28:27 train launch yolov26s-rgb-bs64 gpu=5
+2026-04-26 10:28:27 launched yolov26s-rgb-bs64 pid=608570 gpu=5
+2026-04-26 10:28:27 smoke start yolov26s-sonar-bs64 gpu=6
+2026-04-26 10:29:15 train launch yolov26s-sonar-bs64 gpu=6
+2026-04-26 10:29:15 launched yolov26s-sonar-bs64 pid=610023 gpu=6
+2026-04-26 10:29:15 all remaining experiments launched

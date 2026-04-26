@@ -1,0 +1,67 @@
+# YOLOMM 双单模态教师蒸馏配置示例
+# 场景: 两个单模态教师 (RGB + X) -> 一个双模态学生
+# 使用: model.train(data='...', distill=('此文件路径', 'both'))
+#
+# 说明:
+#   - YAML 只声明教师参与蒸馏，具体蒸馏算法由家族适配器决定
+#   - YOLOMM 学生 output 蒸馏自动使用: 前景引导 + cls/loc 解耦蒸馏
+#   - YOLOMM 学生 feature 蒸馏自动使用: 前景引导 + 4 分项损失 (L_fg + L_bg + L_cwd + L_ctx)
+#   - 不需要在 YAML 中指定 loss 类型或超参数
+#
+# role 语义说明:
+#   role 表示**运行时给该教师喂什么输入**，不代表教师的历史训练来源。
+#   - role: rgb  -> 运行时只取 batch 的 RGB 3 通道喂给教师
+#   - role: x    -> 运行时只取 batch 的 X 模态 3 通道喂给教师
+#   - role: dual -> 运行时喂完整的 RGB+X 6 通道拼接输入
+#   系统不会根据教师内部结构或历史训练方式反向推断身份。
+
+version: 1
+
+teachers:
+  - name: teacher_rgb
+    role: rgb                # 运行时只喂 RGB 3 通道
+    weights: runs/detect/yolomm-rgb-large/weights/best.pt
+    # yaml: yolo11l-mm-mid.yaml  # 可选辅助，不能替代 weights
+
+  - name: teacher_x
+    role: x                  # 运行时只喂 X 模态 3 通道
+    weights: runs/detect/yolomm-thermal-large/weights/best.pt
+
+mappings:
+  # ========================================
+  # 中间特征蒸馏 -- 支持三种配置语法
+  # ========================================
+  feature:
+    # --- 语法 1: 原子映射（单层对单层） ---
+    # 最直接的写法，精确指定教师和学生的对应层
+    - teacher: teacher_rgb
+      teacher_layer: 6        # 教师骨干第 6 层输出（单个整数）
+      student_layer: 17       # 学生骨干第 17 层输出（单个整数）
+
+    - teacher: teacher_x
+      teacher_layer: 6
+      student_layer: 17
+
+    # --- 语法 2: 显式区间映射（多层对多层） ---
+    # 两侧用 [start, end] 闭区间声明，长度必须一致
+    # 系统自动 zip 展开为逐层原子映射:
+    #   T[3]->S[13], T[4]->S[14], ..., T[10]->S[20]
+    - teacher: teacher_rgb
+      teacher_layer: [3, 10]   # 教师层 3-10（共 8 层）
+      student_layer: [13, 20]  # 学生层 13-20（共 8 层，与教师一致）
+
+    # --- 语法 3: 自动展开映射（教师区间对学生输入侧自动展开） ---
+    # 系统自动查找学生模型中 student_input 对应的连续 backbone 层
+    # 并与教师区间逐项配对
+    - teacher: teacher_x
+      teacher_layer: [0, 10]   # 教师层 0-10
+      student_input: X         # 自动展开到学生 X 输入侧连续 backbone
+
+  # ========================================
+  # 输出级蒸馏 -- 教师参与声明（不写层索引）
+  # ========================================
+  # 每条声明只指定哪个教师参与输出蒸馏
+  # 实际蒸馏算法: 前景引导 + cls/loc 解耦 (由 YOLOMM 家族适配器决定)
+  output:
+    - teacher: teacher_rgb
+    - teacher: teacher_x

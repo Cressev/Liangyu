@@ -1,0 +1,9 @@
+{
+  "mapS": 0.20033356668340097,
+  "mapM": 0.38485786779514947,
+  "mapL": 0.49164870014910544,
+  "AP": 0.3390478974307823,
+  "AP50": 0.646267423900486,
+  "AP75": 0.3155277630296788,
+  "source": "ultralytics.utils.coco_eval_bbox_mm.COCOevalBBoxMM from uploaded ultralytics.zip"
+}

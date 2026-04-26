@@ -1,0 +1,6 @@
+Smoke run: /dpc/yuanxiangqing/projects/detection/MutilModel_423/run_smoke/detect-size-maps-yolo11s-rgb
+Purpose: verify standard DetectionValidator writes S/M/L columns.
+results.csv columns:
+epoch,time,train/box_loss,train/cls_loss,train/dfl_loss,metrics/precision(B),metrics/recall(B),metrics/mAP50(B),metrics/mAP75(B),metrics/mAP50-95(B),metrics/mAP50-95(S),metrics/mAP50-95(M),metrics/mAP50-95(L),val/box_loss,val/cls_loss,val/dfl_loss,lr/pg0,lr/pg1,lr/pg2
+last row:
+1,19.6373,4.0891,5.05572,4.15857,0,0,0,0,0,0,0,0,4.43492,5.29377,4.19236,0.000164021,0.000164021,0.000164021

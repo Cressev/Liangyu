@@ -1,0 +1,23 @@
+# Large binary artifacts are uploaded as GitHub Release assets instead of Git blobs.
+*.pt
+*.pth
+*.tar
+*.tar.gz
+*.zip
+*.part_*
+
+# Run products and datasets are included in the release snapshot archive.
+MutilModel_423/run/
+MutilModel_423/run_*/
+MutilModel_423/dataset/underwater/rgb/
+MutilModel_423/dataset/underwater/sonar/
+MutilModel_423/dataset/underwater/images*/
+MutilModel_423/dataset/underwater/labels*/
+
+# Python/runtime noise.
+__pycache__/
+*.pyc
+.pytest_cache/
+.temp_map_out*
+wandb/
+

@@ -1,0 +1,23 @@
+import os
+
+os.environ.setdefault('CUDA_VISIBLE_DEVICES', '0')  # 物理 GPU 0；如需换卡改这里
+
+from ultralytics import RTDETR
+
+
+if __name__ == '__main__':
+    model = RTDETR('rtdetr-l.yaml')
+    model.train(
+        data='/root/autodl-tmp/MutilModel_423/dataset/underwater/data_rgb.yaml',
+        epochs=350,
+        batch=36,
+        device='0',
+        amp=False,
+        cache=True,
+        resume=True,
+        patience=50,
+        project='run',
+        name='rtdetr-l',
+        exist_ok=True,
+        verbose=True,
+    )
