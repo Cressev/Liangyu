@@ -1,19 +1,25 @@
-# Current State
+# Current Project State
 
-Last updated: 2026-04-26 15:32 CST
+Last updated: 2026-04-28 Asia/Shanghai
 
 ## Active Work
-- Formal baseline training jobs are still running on the training machine under /dpc/yuanxiangqing/projects/detection/MutilModel_423.
-- Code/docs/log indexes have been pushed to GitHub repo Cressev/Liangyu, branch main, commit 9e802f5.
-- Large project snapshot upload is running as a GitHub Release asset upload in the background.
+- No active YOLO `20260427_r2` training jobs remain.
+- Final status: all 14 YOLO full-metrics rerun tasks completed normally.
+- YOLOv12 RGB/Sonar ended by EarlyStopping after resume.
+- YOLOv26 RGB reached epoch 350; YOLOv26 Sonar ended normally by EarlyStopping.
 
-## GitHub Upload
-- Release upload PID: 864878.
-- Upload log: /dpc/yuanxiangqing/projects/detection/training_logs/github_release_upload_20260426_152626.log.
-- Snapshot source: /dpc/yuanxiangqing/projects/detection.
-- Snapshot excludes duplicate archives MutilModel_423.tar.gz and MutilModel_423/数据集.zip, but includes extracted project files, weights, logs, run outputs, datasets, and memory files.
+## Final Outputs
+- Remote completed table:
+  - `/dpc/yuanxiangqing/projects/detection/实验表格_yolo_fullmetrics_20260427_r2_已完成.md`
+  - `/dpc/yuanxiangqing/projects/detection/实验表格_yolo_fullmetrics_20260427_r2_已完成.txt`
+- Local completed table:
+  - `/Users/liam/Code/codex/zly_detection/实验表格_yolo_fullmetrics_20260427_r2_已完成.md`
+  - `/Users/liam/Code/codex/zly_detection/实验表格_yolo_fullmetrics_20260427_r2_已完成.txt`
+- Archive:
+  - `/dpc/yuanxiangqing/projects/detection/实验存档_yolo_fullmetrics_20260427_r2.md`
+  - `/Users/liam/Code/codex/zly_detection/实验存档_yolo_fullmetrics_20260427_r2.md`
+  - `/dpc/yuanxiangqing/projects/detection/reports/yolo_fullmetrics_20260427_r2_experiment_archive.md`
 
-## Next Steps
-- Monitor github_release_upload_20260426_152626.log until the release URL and all split asset uploads finish.
-- Keep monitoring the active baseline training jobs and fill the experiment table as runs complete.
-- Revoke or rotate the GitHub token after upload is complete.
+## Notes
+- Table generation script: `/Users/liam/Code/codex/zly_detection/scripts/generate_yolo_fullmetrics_archive.py` and remote copy `/tmp/generate_yolo_fullmetrics_archive.py`.
+- Resume compatibility fixes remain in `trainMM.py` and `ultralytics/engine/model.py` so future checkpoint resumes do not fail on checkpoint `model_scale` metadata.

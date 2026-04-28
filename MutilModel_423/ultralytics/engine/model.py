@@ -912,10 +912,11 @@ class Model(torch.nn.Module):
         args = {**overrides, **custom, **kwargs, "mode": "train"}  # highest priority args on the right
         if args.get("resume"):
             args["resume"] = self.ckpt_path
+            args.pop("model_scale", None)
 
         self.trainer = (trainer or self._smart_load("trainer"))(overrides=args, _callbacks=self.callbacks)
         if args.get("resume") and getattr(self.trainer.args, "model_scale", None):
-            raise ValueError("model_scale/scale is not supported with resume=True. Resume uses the checkpoint architecture.")
+            self.trainer.args.model_scale = None
         if not args.get("resume"):  # manually set model only if not resuming
             cfg_for_build = self.model.yaml
             model_scale = getattr(self.trainer.args, "model_scale", None)

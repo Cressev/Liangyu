@@ -47,3 +47,70 @@
 - Large project snapshot upload is running as GitHub Release asset upload PID 864878.
 - Upload log: /dpc/yuanxiangqing/projects/detection/training_logs/github_release_upload_20260426_152626.log.
 - The release snapshot excludes duplicate archives /dpc/yuanxiangqing/projects/detection/MutilModel_423.tar.gz and MutilModel_423/数据集.zip, while keeping extracted project files, weights, logs, run outputs, datasets, and memory files.
+
+## 2026-04-27 Training and GitHub status update
+- GitHub code branch main is pushed through commit 93e7857.
+- GitHub Release project-snapshot-20260426_152626 completed split asset upload at 2026-04-26 20:00:20 CST. Assets include SHA256SUMS.txt and seven tar parts aa-ag.
+- RT-DETR RGB and Sonar runs finished early at epochs 321 and 322; final metrics were copied into /Users/liam/Code/codex/zly_detection/实验表格.txt.
+- SSD RGB and Sonar completed 350/350; VOC mAP50 and model complexity were copied into the experiment table. Legacy SSD eval did not output map75/map50-95/S/M/L/FPS.
+- Faster R-CNN RGB and Sonar are still running on PIDs 749615 and 749751, around epochs 205/350 and 207/350 at the time of this update.
+
+## 2026-04-27 SSD full metric correction
+- Corrected an experiment-table gap: the previous SSD smoke check verified that training/eval ran, but did not verify that all requested table metrics were emitted. This was a process mistake.
+- Added post-eval script `/dpc/yuanxiangqing/projects/detection/MutilModel_423/eval_legacy_detector_coco_metrics.py` to recompute COCO-style `map50`, `map75`, `map50_95`, `mapS`, `mapM`, `mapL` from legacy SSD/FRCNN detection outputs.
+- Validated the script first on SSD RGB with `--limit 20`, then ran full SSD RGB/Sonar validation on 1000 images each using best_epoch_weights.pth.
+- SSD RGB full metrics: map50=0.56934, map75=0.21113, map50_95=0.26360, mapS=0.01989, mapM=0.31935, mapL=0.46855, inference FPS=47.83.
+- SSD Sonar full metrics: map50=0.30768, map75=0.12693, map50_95=0.15035, mapS=0.00074, mapM=0.15461, mapL=0.40296, inference FPS=50.06.
+- Updated experiment tables at `/Users/liam/Code/codex/zly_detection/实验表格.md`, `/Users/liam/Code/codex/zly_detection/实验表格.txt`, and remote copies `/dpc/yuanxiangqing/projects/detection/实验表格.md` and `/dpc/yuanxiangqing/projects/detection/实验表格.txt`.
+- Eval logs: `/dpc/yuanxiangqing/projects/detection/training_logs/full_metric_eval/ssd-rgb-full-metrics_20260427.log` and `ssd-sonar-full-metrics_20260427.log`.
+
+## 2026-04-27 FRCNN table completion
+- FRCNN formal runs did not finish normally: both RGB and Sonar interrupted around epoch 219/350 during eval because /dpc returned `No space left on device` while writing `.temp_map_out` files.
+- Completed the experiment table by running full COCO-style post-eval from best_epoch_weights.pth into /tmp outputs.
+- FRCNN RGB metrics: map50=0.62547, map75=0.19370, map50_95=0.27184, mapS=0.04551, mapM=0.29810, mapL=0.46332, inference FPS=30.53.
+- FRCNN Sonar metrics: map50=0.58072, map75=0.16552, map50_95=0.24054, mapS=0.03042, mapM=0.26743, mapL=0.38335, inference FPS=31.28.
+- Updated experiment tables locally and remotely: /Users/liam/Code/codex/zly_detection/实验表格.txt, /Users/liam/Code/codex/zly_detection/实验表格.md, /dpc/yuanxiangqing/projects/detection/实验表格.txt, /dpc/yuanxiangqing/projects/detection/实验表格.md.
+
+## 2026-04-27 Storage recheck
+- Rechecked `/dpc` storage after the user questioned the 200T-capacity behavior.
+- `/dpc` is Lustre shared scratch, about 259T total, 251T used, 6.2T available, 97-98% full; inode use is only about 20%.
+- `/dpc/yuanxiangqing` visible usage is hundreds of GB rather than hundreds of TB: `projects` about 219G, `model` about 94G, `envs/conda` about 59G, `envs/uv` about 11G, `.cache` about 8.9G.
+- The detection project is about 18G, with `MutilModel_423/run_non_yolo_legacy` about 12G and `training_logs` about 308M. This project is not the source of the 251T global filesystem usage.
+- A write test under `/dpc/yuanxiangqing/projects/detection` succeeded during the check. Main conclusion: previous `No space left on device` behavior is consistent with a nearly-full shared Lustre filesystem or quota/backend pressure, not the detection experiment directory consuming 200T.
+- Detailed storage notes were appended to `findings/training_machine_environment.md`.
+
+## 2026-04-27 YOLO full-metrics rerun started
+- Started a new YOLO rerun batch after patching training-time validation to emit size-specific metrics in normal `results.csv` output.
+- New smoke/formal separation: smoke logs under `training_logs/smoke_yolo_fullmetrics_20260427_r2`, formal logs and launch table under `training_logs/yolo_fullmetrics_20260427_r2`, smoke runs under `MutilModel_423/run_smoke_yolo_fullmetrics_20260427_r2`, and formal runs under `MutilModel_423/run_yolo_bs64_fullmetrics_20260427_r2`.
+- Initial scheduler successfully launched YOLOv5s RGB/Sonar, YOLOv8s RGB/Sonar, and YOLOv10s RGB/Sonar after `epochs=1` smoke tests verified `metrics/mAP50-95(S/M/L)` columns.
+- Found and corrected two launch issues: GPU assignment needed to avoid occupied GPUs after smoke failures, and YOLOv9 cannot receive `scale=s` because `yolov9s.yaml` has no `scales:` block.
+- Patched `MutilModel_423/trainMM.py` so `scale` is passed only when the model YAML defines `scales:`.
+- Restarted continuation scheduling with `continue_yolo_fullmetrics_20260427_r2_part2.sh`. YOLOv9 RGB smoke passed after the patch and formal training launched. The part2 scheduler remains active to queue YOLOv9 Sonar, YOLOv11 Sonar, YOLOv12 RGB/Sonar, and YOLOv26 RGB/Sonar as GPUs free up.
+- Added explicit `--resume/--no-resume` support to `MutilModel_423/trainMM.py`. To resume a YOLO run, launch with `--model <run_dir>/weights/last.pt --resume --device 0` under the same project environment; the Ultralytics backend restores checkpoint args and continues from the saved epoch.
+
+## 2026-04-27 YOLO rerun paused for GPU release
+- Stopped all active training processes from YOLO full-metrics rerun batch `20260427_r2` at user request so the GPUs can be used by others. `nvidia-smi` showed all 8 GPUs clear after stopping.
+- Completed normally before pause: YOLOv5s RGB/Sonar, YOLOv8s RGB/Sonar, YOLOv9s RGB/Sonar, YOLOv10s RGB/Sonar, YOLOv11s RGB/Sonar.
+- Paused before normal completion: YOLOv12s RGB, YOLOv12s Sonar, YOLOv26s RGB, YOLOv26s Sonar. Their `last.pt` checkpoints are available under `/dpc/yuanxiangqing/projects/detection/MutilModel_423/run_yolo_bs64_fullmetrics_20260427_r2/<run>/weights/last.pt`.
+- Created a new completed-only experiment table distinct from previous tables: `/dpc/yuanxiangqing/projects/detection/实验表格_yolo_fullmetrics_20260427_r2_已完成.md` and `.txt`; synced local copies to `/Users/liam/Code/codex/zly_detection/`.
+- Created resume/archive file: `/dpc/yuanxiangqing/projects/detection/实验存档_yolo_fullmetrics_20260427_r2.md` and `/dpc/yuanxiangqing/projects/detection/reports/yolo_fullmetrics_20260427_r2_experiment_archive.md`; synced local copy to `/Users/liam/Code/codex/zly_detection/实验存档_yolo_fullmetrics_20260427_r2.md`.
+
+## 2026-04-27 YOLO r2 resume restarted
+- GPU state at start: GPU 0-5 had residual memory with no listed process; GPU 6-7 were free.
+- Resumed paused YOLOv12 RGB/Sonar on physical GPU 6/7 using last.pt checkpoints.
+- Fixed resume compatibility: trainMM.py drops checkpoint model_scale override; ultralytics/engine/model.py clears model_scale after trainer restore during resume.
+- Scheduler path: /dpc/yuanxiangqing/projects/detection/resume_yolo_paused_20260427_r2.sh
+- Logs: /dpc/yuanxiangqing/projects/detection/training_logs/yolo_fullmetrics_20260427_r2/resume_20260427_152217_*.log
+
+## 2026-04-27 YOLOv26 remaining jobs resumed
+- User asked whether training ended. Check showed YOLOv12 RGB/Sonar ended normally by EarlyStopping, but YOLOv26 RGB/Sonar had not run because the previous queue function exited after the first job per GPU.
+- Created and launched `/dpc/yuanxiangqing/projects/detection/resume_yolo26_remaining_20260427_r2.sh` to resume only remaining YOLOv26 jobs on physical GPUs 6 and 7.
+- Scheduler PID: 1799511.
+- Logs: `/dpc/yuanxiangqing/projects/detection/training_logs/yolo_fullmetrics_20260427_r2/resume_20260427_154839_yolov26s-*.log`.
+
+## 2026-04-28 YOLO r2 final completion confirmed
+- No active training or scheduler processes remain for `20260427_r2`.
+- GPU 6/7 are free; GPU 0-5 still show residual memory with no listed process.
+- YOLOv26 RGB finished normally at epoch 350, best epoch 334.
+- YOLOv26 Sonar finished normally by EarlyStopping, results file last epoch 235; log reports successful rc=0.
+- Regenerated final completed table and archive: completed_count=14, paused_count=0.

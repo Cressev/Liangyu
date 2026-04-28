@@ -1,5 +1,19 @@
 # Training Log Index
 
+## YOLO Full-Metrics Rerun 20260427_r2
+
+Final completed table:
+
+- `实验表格_yolo_fullmetrics_20260427_r2_已完成.md`
+- `实验表格_yolo_fullmetrics_20260427_r2_已完成.txt`
+
+Archive:
+
+- `实验存档_yolo_fullmetrics_20260427_r2.md`
+- `reports/yolo_fullmetrics_20260427_r2_experiment_archive.md`
+
+All 14 YOLO full-metrics rerun tasks completed normally. Formal logs are stored on the training machine under `/dpc/yuanxiangqing/projects/detection/training_logs/yolo_fullmetrics_20260427_r2/`; raw `*.log` files are excluded from git by repository policy.
+
 Older log mappings were cleared as requested. YOLO-series bs64 experiments are listed below.
 
 Launch commands for smoke tests, formal runs, resumes, and monitoring are documented in `/dpc/yuanxiangqing/projects/detection/training_logs/TRAINING_LAUNCH_README.md`.
