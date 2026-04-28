@@ -23,3 +23,7 @@ Last updated: 2026-04-28 Asia/Shanghai
 ## Notes
 - Table generation script: `/Users/liam/Code/codex/zly_detection/scripts/generate_yolo_fullmetrics_archive.py` and remote copy `/tmp/generate_yolo_fullmetrics_archive.py`.
 - Resume compatibility fixes remain in `trainMM.py` and `ultralytics/engine/model.py` so future checkpoint resumes do not fail on checkpoint `model_scale` metadata.
+- GitHub `main` was updated with final YOLO r2 tables, archive, scripts, and resume fixes at commit `a7ec9ec`.
+- GitHub Release `project-snapshot-20260426_152626` now includes final r2 artifacts:
+  - `yolo_fullmetrics_20260427_r2_final_artifacts.tar.gz`
+  - `yolo_fullmetrics_20260427_r2_final_artifacts.tar.gz.sha256`

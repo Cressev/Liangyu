@@ -114,3 +114,10 @@
 - YOLOv26 RGB finished normally at epoch 350, best epoch 334.
 - YOLOv26 Sonar finished normally by EarlyStopping, results file last epoch 235; log reports successful rc=0.
 - Regenerated final completed table and archive: completed_count=14, paused_count=0.
+
+## 2026-04-28 GitHub remote updated
+- Pushed final YOLO r2 code/docs/table/archive update to GitHub `main`; first commit for this update: `a7ec9ec`.
+- Uploaded final YOLO r2 artifact bundle to GitHub Release `project-snapshot-20260426_152626`:
+  - `yolo_fullmetrics_20260427_r2_final_artifacts.tar.gz` (606200442 bytes)
+  - `yolo_fullmetrics_20260427_r2_final_artifacts.tar.gz.sha256`
+- Release URL: https://github.com/Cressev/Liangyu/releases/tag/project-snapshot-20260426_152626
